@@ -4,10 +4,12 @@
     "strict": true,
     "paths": {
       "@/*": ["./*"],
+      "@styles/*": ["./styles/*"],
       "@components/*": ["./components/*"],
       "@states/*": ["./redux/states/*"],
       "@actions/*": ["./redux/actions/*"],
       "@testData/*": ["./testData/*"],
+      "@utils/*": ["./utils/*"]
     }
   },
   "include": [
