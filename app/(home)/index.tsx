@@ -9,6 +9,7 @@ import CustomerMarkers from "@/components/CustomerMarkers";
 import CustomModal from "@/components/CustomModal"; // Import the modal
 import { setRiderDetails, updateRiderLocation } from "@actions/riderActions";
 import { setRideStatus } from "@actions/globalActions";
+import { getNearbyRides } from "@utils/riderMapScreenUtils/nearbyRides";
 import riderCoords from "@testData/riderCoords.json";
 import { styles } from "@styles/generic";
 import { useNavigation } from "@react-navigation/native";
@@ -19,6 +20,7 @@ export default function Index() {
     (state: any) => state.rider
   );
   let rides = useSelector((state: any) => state.ride);
+  rides = getNearbyRides(riderLocation, rides, 5);
 
   const dispatch = useDispatch();
 
