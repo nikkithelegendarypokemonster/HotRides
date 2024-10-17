@@ -9,6 +9,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+import { Stack } from "expo-router";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -33,5 +34,8 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
+        <Stack>
+          <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        </Stack>
   );
 }
