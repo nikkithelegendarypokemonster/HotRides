@@ -3,9 +3,13 @@ import { View, Text } from "react-native";
 import { Marker, Callout } from "react-native-maps";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-export default function RiderMarker({ coordinate, details, showModal }) {
+export default function RiderMarker({
+  coordinate,
+  details,
+  onPress = () => {},
+}) {
   return (
-    <Marker coordinate={coordinate} onPress={() => showModal(details)}>
+    <Marker coordinate={coordinate} onPress={() => onPress(details)}>
       <View>
         <Ionicons name="car-outline" size={40} color="yellow" />
       </View>

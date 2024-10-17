@@ -42,7 +42,11 @@ export default function Index() {
     // Close modal and navigate to the Ride Progress screen
     hideModal();
     dispatch(setRideStatus(true));
-    navigation.navigate("ride", { rideDetails: modalDetails }); // Pass the ride details to the new screen
+    const rideIndex = rides.findIndex(
+      (ride: any) => ride.id === modalDetails.id
+    );
+
+    navigation.navigate("ride", { rideIndex });
   };
 
   const showModal = (details: any) => {
@@ -61,11 +65,11 @@ export default function Index() {
         <RiderMarker
           coordinate={riderLocation}
           details={{ ...rider, location: { ...riderLocation } }}
-          showModal={showModal}
+          onPress={showModal}
         />
 
         {rides && rides.length > 0 ? (
-          <CustomerMarkers rides={rides} showModal={showModal} />
+          <CustomerMarkers rides={rides} onPress={showModal} />
         ) : null}
       </CustomMapView>
 

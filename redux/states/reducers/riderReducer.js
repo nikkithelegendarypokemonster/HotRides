@@ -3,7 +3,7 @@ const riderReducer = (state = {}, action) => {
     case "SET_RIDER_DETAILS":
       return { ...state, ...action.payload };
     case "UPDATE_RIDER_LOCATION":
-      return { ...state, location: { ...action.payload } };
+      return { ...state, location: { ...state.location, ...action.payload } };
     default:
       return state;
   }

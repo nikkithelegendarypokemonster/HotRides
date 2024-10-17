@@ -1,31 +1,25 @@
-import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Marker, Callout } from "react-native-maps";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
-export default function CustomerMarkers({ rides, showModal }) {
+export default function CustomerMarkers({ rides, onPress }) {
+  console.log(rides);
+
   return (
     <>
-      {rides.map((ride, index) => (
+      {rides.map((ride: any, index: number) => (
         <Marker
           key={index}
-          coordinate={ride.location}
+          coordinate={ride.location} // Use pickup location for the marker
           onPress={() =>
-            showModal({
+            onPress({
               name: ride.name,
-              location: ride.pickupLocation,
+              location: ride.location,
               destination: ride.destination,
               status: ride.status,
               ...ride,
             })
           }
         >
-          {/* Icon for the Customer Marker */}
-          {/* <View>
-            <Ionicons name="person-circle-outline" size={40} color="blue" />
-          </View> */}
-
-          {/* Callout for displaying full text */}
           <Callout tooltip>
             <View style={styles.calloutContainer}>
               <Text style={styles.calloutText}>{ride.name}</Text>
