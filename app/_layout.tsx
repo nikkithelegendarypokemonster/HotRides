@@ -10,6 +10,9 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 import { Stack } from "expo-router";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "@states/store";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -34,8 +37,12 @@ export default function RootLayout() {
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
+    <Provider store={store}>
+      <PersistGate persistor={persistor} loading={null}>
         <Stack>
           <Stack.Screen name="(home)" options={{ headerShown: false }} />
         </Stack>
+      </PersistGate>
+    </Provider>
   );
 }
