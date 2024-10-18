@@ -13,6 +13,7 @@ import { updateRideDriverInfo } from "@actions/rideActions";
 import {
   setRiderDetails,
   updateRiderLocation,
+  updateRiderSearchRadius,
 } from "@actions/riderActions";
 import { setRideStatus } from "@actions/globalActions";
 import { getNearbyRides } from "@utils/riderMapScreenUtils/nearbyRides";
