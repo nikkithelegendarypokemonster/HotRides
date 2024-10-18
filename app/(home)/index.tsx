@@ -26,16 +26,38 @@ export default function Index() {
   const [modalDetails, setModalDetails] = useState(null);
 
   useEffect(() => {
-    dispatch(setRiderDetails());
-    dispatch(
-      updateRiderLocation({
-        ...riderCoords,
+    const getLocationAndUpdateRider = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let currentLocation = await Location.getCurrentPositionAsync({});
+      setLocation({
+        latitude: currentLocation.coords.latitude,
+        longitude: currentLocation.coords.longitude,
         latitudeDelta: 0.0922,
         longitudeDelta: 0.0421,
-      })
-    );
+      });
+    };
+
+    getLocationAndUpdateRider();
   }, [dispatch]);
 
+  useEffect(() => {
+    if (currentRiderLocation) {
+      dispatch(setRiderDetails());
+      dispatch(
+        updateRiderLocation({
+          latitude: currentRiderLocation.latitude,
+          longitude: currentRiderLocation.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        })
+      );
+    }
+  }, [dispatch, currentRiderLocation]);
   const handleBookRide = () => {
     // Close modal and navigate to the Ride Progress screen
     hideModal();
@@ -43,6 +65,7 @@ export default function Index() {
     const rideIndex = rides.findIndex(
       (ride: any) => ride.id === modalDetails.id
     );
+    dispatch(updateRideDriverInfo(rideIndex, rider.id, rider.name));
 
     navigation.navigate("ride", { rideIndex });
   };
