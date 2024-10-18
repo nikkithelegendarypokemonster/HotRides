@@ -67,6 +67,8 @@ export default function RideProgressScreen() {
         return;
       }
 
+      setDeclineReason(currentRide.declineReason || "");
+
       runSimulation(
         timeoutIds.current,
         dispatch,
