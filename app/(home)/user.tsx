@@ -55,6 +55,11 @@ export default function UserBooking() {
         Destination: {item.destination.latitude}, {item.destination.longitude}
       </Text>
       <Text style={rideItemStyles.rideText}>Status: {item.status}</Text>
+      {item.status === "declined" ? (
+        <Text style={rideItemStyles.rideText}>
+          Reason: {item?.declineReason ? item.declineReason : "No Reason"}
+        </Text>
+      ) : null}
       <Button title="Delete" onPress={() => handleDeleteRide(item.id)} />
     </View>
   );
