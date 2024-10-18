@@ -12,7 +12,7 @@ const rideReducer = (state = [], action) => {
       return state.filter((ride) => ride.id !== action.payload);
 
     case "UPDATE_RIDE_STATUS":
-      console.log("Updating ride status:", action.payload); // Debugging log
+      console.log("Updating ride status:", action.payload);
       return state.map((ride, index) => {
         console.log("Ride ID:", index, "Payload ID:", action.payload.rideId);
         return index === action.payload.rideId
