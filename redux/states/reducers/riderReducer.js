@@ -4,6 +4,8 @@ const riderReducer = (state = {}, action) => {
       return { ...state, ...action.payload };
     case "UPDATE_RIDER_LOCATION":
       return { ...state, location: { ...state.location, ...action.payload } };
+    case "UPDATE_RIDER_RADIUS":
+      return { ...state, maxSearchRadius: action.payload };
     default:
       return state;
   }
