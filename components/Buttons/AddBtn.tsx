@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#007bff", // Blue color for the button
+    backgroundColor: "#007bff",
     padding: 10,
     borderRadius: 8,
     justifyContent: "center",
@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 18,
-    marginLeft: 8, // Add space between icon and text
+    marginLeft: 8,
   },
 });

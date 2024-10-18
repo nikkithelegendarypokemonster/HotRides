@@ -7,7 +7,7 @@ import {
   View,
   Button,
 } from "react-native";
-import AddButton from "@/components/AddBtn";
+import AddButton from "@/components/Buttons/AddBtn";
 import { styles } from "@styles/generic";
 import { useSelector, useDispatch } from "react-redux";
 import { setRideDetails, deleteRideDetails } from "@/redux/actions/rideActions"; // Action to add and delete rides
@@ -61,7 +61,7 @@ export default function UserBooking() {
       <FlatList
         data={rides}
         renderItem={renderRideItem}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(_, index) => index.toString()}
         ListEmptyComponent={
           <View style={styles.emptyState}>
             <Text>No rides available. Add a new ride.</Text>

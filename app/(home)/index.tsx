@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { View, Text, StyleSheet, Alert } from "react-native";
-import BookBtn from "@/components/BookBtn";
-import CancelBtn from "@/components/CancelBtn";
 import CustomMapView from "@/components/MapView";
 import RiderMarker from "@/components/RiderMarker";
 import CustomerMarkers from "@/components/CustomerMarkers";

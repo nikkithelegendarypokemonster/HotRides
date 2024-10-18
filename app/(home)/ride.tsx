@@ -1,9 +1,11 @@
 import React, { useCallback, useRef, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import CustomMapView from "@/components/MapView";
-import CustomerMarkers from "@/components/CustomerMarkers";
-import CustomModal from "@/components/CustomModal";
-import RiderMarker from "@/components/RiderMarker";
+import { View, Text } from "react-native";
+import CustomMapView from "@/components/Map_Items/MapView";
+import CustomerMarkers from "@/components/Map_Items/CustomerMarkers";
+import CustomModal from "@/components/Modal/CustomModal";
+import RiderMarker from "@/components/Map_Items/RiderMarker";
+import CancelBtn from "@/components/Buttons/CancelBtn";
+import FloatBtn from "@/components/Buttons/FloatBtn";
 import { Marker, Callout } from "react-native-maps";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +24,7 @@ export default function RideProgressScreen() {
   const dispatch = useDispatch();
   const { rideIndex }: any = route.params;
 
-  const [showModal, setShowModal] = useState(false); // Modal visibility state
+  const [showModal, setShowModal] = useState(false);
   const rides = useSelector((state: any) => state.ride);
   const { location: riderLocation, ...rider } = useSelector(
     (state: any) => state.rider
@@ -43,7 +45,6 @@ export default function RideProgressScreen() {
   const finalSequence = () => {
     dispatch(setRideStatus(false));
     setShowModal(false);
-    console.log("Finish");
     navigation.goBack();
   };
 
@@ -97,26 +98,24 @@ export default function RideProgressScreen() {
           </CustomMapView>
 
           {/* Floating button to open modal */}
-          <TouchableOpacity
-            style={styles.floatingButton}
-            onPress={() => setShowModal(true)} // Open the modal
-          >
+          <FloatBtn onPress={() => setShowModal(true)}>
             <Ionicons
               name="information-circle-outline"
               size={32}
               color="black"
             />
-          </TouchableOpacity>
+          </FloatBtn>
 
           {/* Custom modal displaying ride info */}
           <CustomModal
             modalVisible={showModal}
-            toggle={() => setShowModal(false)} // Close the modal
+            toggle={() => setShowModal(false)}
           >
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Ride Information</Text>
+            <View style={rideScreenStyles.modalContent}>
+              <Text style={rideScreenStyles.modalTitle}>Ride Information</Text>
               <Text>Driver ID: {currentRide.driver_id || "Not assigned"}</Text>
               <Text>Customer Name: {currentRide.name}</Text>
+              <Text>Rider Name: {currentRide.rider_name}</Text>
               <Text>Status: {currentRide.status}</Text>
               <Text>
                 Pickup Location: {currentRide.pickupLocation.latitude},{" "}
@@ -127,19 +126,9 @@ export default function RideProgressScreen() {
                 {currentRide.destination.longitude}
               </Text>
               {/* Buttons */}
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={styles.declineButton}
-                  onPress={handleDecline}
-                >
-                  <Text style={styles.buttonText}>Decline Ride</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onPress={() => setShowModal(false)}
-                >
-                  <Text style={styles.buttonText}>Close</Text>
-                </TouchableOpacity>
+              <View style={rideScreenStyles.buttonContainer}>
+                <CancelBtn onPress={handleDecline} text="Decline Ride" />
+                <CancelBtn onPress={() => setShowModal(false)} text="Close" />
               </View>
             </View>
           </CustomModal>
