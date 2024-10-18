@@ -1,6 +1,4 @@
-import { applyMiddleware } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
-import thunk from "redux-thunk";
 
 import reducer from "./reducer";
 import { persistStore, persistReducer } from "redux-persist";
@@ -12,7 +10,6 @@ const persistConfig = {
   storage: AsyncStorage,
   stateReconciler: autoMergeLevel2,
 };
-const initialState = {};
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 const store = configureStore({

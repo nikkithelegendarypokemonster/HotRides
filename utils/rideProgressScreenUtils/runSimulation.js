@@ -11,7 +11,6 @@ export const runSimulation = (
 ) => {
   return new Promise((resolve) => {
     const timeout1 = setTimeout(() => {
-      //   console.log("First Timeout Complete");
       dispatch(updateRideStatus(rideIndex, "accepted"));
 
       const timeout2 = setTimeout(() => {

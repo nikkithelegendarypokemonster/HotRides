@@ -1,35 +1,42 @@
 import { Tabs } from "expo-router";
 import { useSelector } from "react-redux";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function AuthLayout() {
-  const rideStatus = useSelector((state: any) => state.global); // Assuming 'global' contains rideStatus
+  const rideStatus = useSelector((state: any) => state.global);
 
   return (
     <Tabs>
-      {/* Rider Map tab */}
       <Tabs.Screen
         name="index"
         options={{
           title: "Rider Map",
-          tabBarButton: rideStatus ? () => null : undefined, // Hide this tab if rideStatus is true
+          tabBarButton: rideStatus ? () => null : undefined,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="map-outline" color={color} size={size} />
+          ),
         }}
       />
 
-      {/* User Booking tab */}
       <Tabs.Screen
         name="user"
         options={{
           title: "User Booking",
-          tabBarButton: rideStatus ? () => null : undefined, // Hide this tab if rideStatus is true
+          tabBarButton: rideStatus ? () => null : undefined,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="people-outline" color={color} size={size} />
+          ),
         }}
       />
 
-      {/* Ride Progress tab */}
       <Tabs.Screen
         name="ride"
         options={{
           title: "Ride Progress",
-          tabBarButton: !rideStatus ? () => null : undefined, // Hide this tab if rideStatus is false
+          tabBarButton: !rideStatus ? () => null : undefined,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="car-outline" color={color} size={size} />
+          ),
         }}
       />
     </Tabs>
