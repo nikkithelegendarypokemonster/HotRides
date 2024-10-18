@@ -8,6 +8,7 @@ import {
   Button,
 } from "react-native";
 import AddButton from "@/components/Buttons/AddBtn";
+import { rideItemStyles } from "@styles/rideItemStyles";
 import { styles } from "@styles/generic";
 import { useSelector, useDispatch } from "react-redux";
 import { setRideDetails, deleteRideDetails } from "@/redux/actions/rideActions"; // Action to add and delete rides
@@ -45,15 +46,15 @@ export default function UserBooking() {
   };
 
   const renderRideItem = ({ item }: any) => (
-    <View style={styles.rideItem}>
-      <Text style={styles.rideText}>Name: {item.name}</Text>
-      <Text style={styles.rideText}>
+    <View style={rideItemStyles.rideItem}>
+      <Text style={rideItemStyles.rideText}>Name: {item.name}</Text>
+      <Text style={rideItemStyles.rideText}>
         Pickup: {item.pickupLocation.latitude}, {item.pickupLocation.longitude}
       </Text>
-      <Text style={styles.rideText}>
+      <Text style={rideItemStyles.rideText}>
         Destination: {item.destination.latitude}, {item.destination.longitude}
       </Text>
-      <Text style={styles.rideText}>Status: {item.status}</Text>
+      <Text style={rideItemStyles.rideText}>Status: {item.status}</Text>
       <Button title="Delete" onPress={() => handleDeleteRide(item.id)} />
     </View>
   );
@@ -65,7 +66,7 @@ export default function UserBooking() {
         renderItem={renderRideItem}
         keyExtractor={(_, index) => index.toString()}
         ListEmptyComponent={
-          <View style={styles.emptyState}>
+          <View style={rideItemStyles.emptyState}>
             <Text>No rides available. Add a new ride.</Text>
           </View>
         }

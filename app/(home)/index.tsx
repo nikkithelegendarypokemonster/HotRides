@@ -17,6 +17,7 @@ import {
 import { setRideStatus } from "@actions/globalActions";
 import { getNearbyRides } from "@utils/riderMapScreenUtils/nearbyRides";
 import { styles } from "@styles/generic";
+import { modalStyles } from "@styles/modalStyles";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -157,7 +158,6 @@ export default function Index() {
                   </Text>
                   <Text>Status: {modalDetails.status}</Text>
                 </>
-              ) : null}
               ) : (
                 <>
                   <Text>Max Search Radius: {searchRadius} km</Text>

@@ -17,6 +17,7 @@ import {
 import { setRideStatus } from "@actions/globalActions";
 import { updateRideStatus } from "@actions/rideActions";
 import { runSimulation } from "@utils/rideProgressScreenUtils/runSimulation";
+import { rideScreenStyles } from "@styles/rideScreenStyles";
 
 export default function RideProgressScreen() {
   const route = useRoute();
@@ -139,48 +140,3 @@ export default function RideProgressScreen() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  floatingButton: {
-    position: "absolute",
-    bottom: 20,
-    right: 20,
-    backgroundColor: "white",
-    borderRadius: 50,
-    padding: 15,
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-  },
-  modalContent: {
-    padding: 20,
-    backgroundColor: "white",
-    borderRadius: 10,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 20,
-  },
-  declineButton: {
-    backgroundColor: "red",
-    padding: 10,
-    borderRadius: 5,
-  },
-  closeButton: {
-    backgroundColor: "gray",
-    padding: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 16,
-  },
-});
