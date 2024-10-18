@@ -11,10 +11,12 @@ import AddButton from "@/components/Buttons/AddBtn";
 import { styles } from "@styles/generic";
 import { useSelector, useDispatch } from "react-redux";
 import { setRideDetails, deleteRideDetails } from "@/redux/actions/rideActions"; // Action to add and delete rides
-import customerCoord from "@testData/customersCoords.json";
 import { addNewRide } from "@/utils/userScreenUtils/userModification";
+
 export default function UserBooking() {
+  const { location: riderLocation } = useSelector((state: any) => state.rider);
   const rides = useSelector((state: any) => state.ride);
+
   const dispatch = useDispatch();
 
   const handleDeleteRide = (id: any) => {
@@ -33,7 +35,7 @@ export default function UserBooking() {
         {
           text: "OK",
           onPress: () => {
-            const newRide = addNewRide(rides, customerCoord);
+            const newRide = addNewRide(rides, riderLocation);
             dispatch(setRideDetails(newRide));
           },
         },
