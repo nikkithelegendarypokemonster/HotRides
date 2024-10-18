@@ -3,6 +3,13 @@ const rideReducer = (state = [], action) => {
     case "SET_RIDE_DETAILS":
       return [...state, action.payload];
 
+    case "SET_RIDE_DECLINE_REASON":
+      return state.map((ride, index) => {
+        return index === action.payload.rideId
+          ? { ...ride, declineReason: action.payload.reason }
+          : ride;
+      });
+
     case "UPDATE_RIDE_DETAILS":
       return state.map((ride) =>
         ride.id === action.payload.id ? { ...ride, ...action.payload } : ride

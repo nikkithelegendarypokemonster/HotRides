@@ -5,11 +5,17 @@ import {
   UPDATE_RIDE_STATUS,
   UPDATE_RIDE_LOCATION,
   UPDATE_RIDE_DRIVER_INFO,
+  SET_RIDE_DECLINE_REASON,
 } from "../constants/rideConstants";
 
 export const setRideDetails = (details) => ({
   type: SET_RIDE_DETAILS,
   payload: details,
+});
+
+export const setRideDeclineReason = (rideId, reason) => ({
+  type: SET_RIDE_DECLINE_REASON,
+  payload: { rideId, reason },
 });
 
 export const updateRideDetails = (details) => ({
