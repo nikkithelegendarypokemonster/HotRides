@@ -6,6 +6,8 @@ import RiderMarker from "@/components/RiderMarker";
 import CustomerMarkers from "@/components/CustomerMarkers";
 import CustomModal from "@/components/CustomModal"; // Import the modal
 import { setRiderDetails, updateRiderLocation } from "@actions/riderActions";
+import { View, Text, Switch, ScrollView } from "react-native";
+import Slider from "@react-native-community/slider";
 import { updateRideDriverInfo } from "@actions/rideActions";
 import {
   setRiderDetails,
@@ -15,22 +17,26 @@ import { setRideStatus } from "@actions/globalActions";
 import { getNearbyRides } from "@utils/riderMapScreenUtils/nearbyRides";
 import { styles } from "@styles/generic";
 import { useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Index() {
   const navigation = useNavigation();
-  const { location: riderLocation, ...rider } = useSelector(
-    (state: any) => state.rider
-  );
+  const {
+    location: riderLocation,
+    maxSearchRadius,
+    ...rider
+  } = useSelector((state: any) => state.rider);
   let rides = useSelector((state: any) => state.ride);
-  rides = getNearbyRides(riderLocation, rides, 5);
-
   const dispatch = useDispatch();
 
+  const [filteredRides, setFilteredRides] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDetails, setModalDetails] = useState(null);
   const [currentRiderLocation, setLocation] = useState(null);
+  const [searchRadius, setSearchRadius] = useState(maxSearchRadius);
+  const [applyRadius, setApplyRadius] = useState(maxSearchRadius !== -1);
 
   useEffect(() => {
     const getLocationAndUpdateRider = async () => {
@@ -65,8 +71,13 @@ export default function Index() {
       );
     }
   }, [dispatch, currentRiderLocation]);
+
+  useEffect(() => {
+    const filtered = getNearbyRides(riderLocation, rides, maxSearchRadius);
+    setFilteredRides(filtered);
+  }, [riderLocation, maxSearchRadius, rides]);
+
   const handleBookRide = () => {
-    // Close modal and navigate to the Ride Progress screen
     hideModal();
     dispatch(setRideStatus(true));
     const rideIndex = rides.findIndex(
@@ -75,6 +86,12 @@ export default function Index() {
     dispatch(updateRideDriverInfo(rideIndex, rider.id, rider.name));
 
     navigation.navigate("ride", { rideIndex });
+  };
+
+  const handleApplySearchRadius = () => {
+    const radiusToApply = applyRadius ? searchRadius : 9999999;
+    dispatch(updateRiderSearchRadius(radiusToApply));
+    hideModal();
   };
 
   const showModal = (details: any) => {
@@ -96,8 +113,8 @@ export default function Index() {
           onPress={showModal}
         />
 
-        {rides && rides.length > 0 ? (
-          <CustomerMarkers rides={rides} onPress={showModal} />
+        {filteredRides && filteredRides.length > 0 ? (
+          <CustomerMarkers rides={filteredRides} onPress={showModal} />
         ) : null}
       </CustomMapView>
 
@@ -126,21 +143,40 @@ export default function Index() {
                   <Text>Status: {modalDetails.status}</Text>
                 </>
               ) : null}
-
-              {/* Button Container */}
-              <View style={styles.btnContainer}>
-                {/* Top Button Row: Book and Reject */}
-                {modalDetails.type !== "rider" ? (
-                  <View style={styles.topBtnContainer}>
-                    <BookBtn onPress={handleBookRide} />
-                    <CancelBtn onPress={hideModal} text="Decline" />
+              ) : (
+                <>
+                  <Text>Max Search Radius: {searchRadius} km</Text>
+                  <Slider
+                    style={{ width: 200, height: 40 }}
+                    minimumValue={1}
+                    maximumValue={50}
+                    step={1}
+                    value={searchRadius <= 100 ? searchRadius : 0}
+                    onValueChange={setSearchRadius}
+                    disabled={!applyRadius}
+                  />
+                  <View style={styles.switchContainer}>
+                    <Text>No Search Radius</Text>
+                    <Switch
+                      value={!applyRadius}
+                      onValueChange={() => setApplyRadius((prev) => !prev)}
+                    />
                   </View>
-                ) : null}
+                </>
+              )}
 
-                {/* Cancel Button Below */}
-                <View style={styles.cancelBtnContainer}>
-                  <CancelBtn onPress={hideModal} text="Close" />
-                </View>
+              <View style={styles.btnContainer}>
+                {modalDetails.type !== "rider" ? (
+                  <>
+                    <BookBtn onPress={handleBookRide} text="Accept" />
+                    <CancelBtn onPress={hideModal} text="Close" />
+                  </>
+                ) : (
+                  <>
+                    <BookBtn onPress={handleApplySearchRadius} text="Apply" />
+                    <CancelBtn onPress={hideModal} text="Close" />
+                  </>
+                )}
               </View>
             </View>
           </View>
