@@ -6,11 +6,17 @@ import RiderMarker from "@/components/RiderMarker";
 import CustomerMarkers from "@/components/CustomerMarkers";
 import CustomModal from "@/components/CustomModal"; // Import the modal
 import { setRiderDetails, updateRiderLocation } from "@actions/riderActions";
+import { updateRideDriverInfo } from "@actions/rideActions";
+import {
+  setRiderDetails,
+  updateRiderLocation,
+} from "@actions/riderActions";
 import { setRideStatus } from "@actions/globalActions";
 import { getNearbyRides } from "@utils/riderMapScreenUtils/nearbyRides";
-import riderCoords from "@testData/riderCoords.json";
 import { styles } from "@styles/generic";
 import { useNavigation } from "@react-navigation/native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Index() {
   const navigation = useNavigation();
@@ -24,6 +30,7 @@ export default function Index() {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalDetails, setModalDetails] = useState(null);
+  const [currentRiderLocation, setLocation] = useState(null);
 
   useEffect(() => {
     const getLocationAndUpdateRider = async () => {

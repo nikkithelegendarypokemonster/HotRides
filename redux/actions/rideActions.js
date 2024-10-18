@@ -4,6 +4,7 @@ import {
   DELETE_RIDE_DETAILS,
   UPDATE_RIDE_STATUS,
   UPDATE_RIDE_LOCATION,
+  UPDATE_RIDE_DRIVER_INFO,
 } from "../constants/rideConstants";
 
 export const setRideDetails = (details) => ({
@@ -29,4 +30,9 @@ export const updateRideStatus = (rideId, status) => ({
 export const updateRideLocation = (rideId, location) => ({
   type: UPDATE_RIDE_LOCATION,
   payload: { rideId, location },
+});
+
+export const updateRideDriverInfo = (rideId, driverId, driverName) => ({
+  type: UPDATE_RIDE_DRIVER_INFO,
+  payload: { rideId, driverId, driverName },
 });
