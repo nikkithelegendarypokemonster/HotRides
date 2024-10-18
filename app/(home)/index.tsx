@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { View, Text, StyleSheet, Alert } from "react-native";
-import CustomMapView from "@/components/MapView";
-import RiderMarker from "@/components/RiderMarker";
-import CustomerMarkers from "@/components/CustomerMarkers";
-import CustomModal from "@/components/CustomModal"; // Import the modal
-import { setRiderDetails, updateRiderLocation } from "@actions/riderActions";
 import { View, Text, Switch, ScrollView } from "react-native";
 import Slider from "@react-native-community/slider";
+import TutorialContent from "@/components/Contents/TutorialContent";
+import BookBtn from "@/components/Buttons/BookBtn";
+import CancelBtn from "@/components/Buttons/CancelBtn";
+import CustomMapView from "@/components/Map_Items/MapView";
+import RiderMarker from "@/components/Map_Items/RiderMarker";
+import CustomerMarkers from "@/components/Map_Items/CustomerMarkers";
+import CustomModal from "@/components/Modal/CustomModal";
+import FloatBtn from "@/components/Buttons/FloatBtn";
 import { updateRideDriverInfo } from "@actions/rideActions";
 import {
   setRiderDetails,
@@ -33,6 +34,7 @@ export default function Index() {
 
   const [filteredRides, setFilteredRides] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [tutorialModalVisible, setTutorialModalVisible] = useState(false); // Tutorial modal state
   const [modalDetails, setModalDetails] = useState(null);
   const [currentRiderLocation, setLocation] = useState(null);
   const [searchRadius, setSearchRadius] = useState(maxSearchRadius);
@@ -104,6 +106,11 @@ export default function Index() {
     setModalDetails(null);
   };
 
+  // Function to toggle the tutorial modal
+  const toggleTutorialModal = () => {
+    setTutorialModalVisible(!tutorialModalVisible);
+  };
+
   return (
     <View style={styles.generic}>
       <CustomMapView location={riderLocation}>
@@ -117,23 +124,31 @@ export default function Index() {
           <CustomerMarkers rides={filteredRides} onPress={showModal} />
         ) : null}
       </CustomMapView>
+      <FloatBtn onPress={toggleTutorialModal}>
+        <Ionicons name="information-circle-outline" size={32} color="black" />
+      </FloatBtn>
+
+      {/* Tutorial Modal */}
+      <CustomModal
+        modalVisible={tutorialModalVisible}
+        toggle={toggleTutorialModal}
+      >
+        <ScrollView contentContainerStyle={modalStyles.modalContent}>
+          <View>
+            <TutorialContent />
+            <CancelBtn onPress={toggleTutorialModal} text="Close" />
+          </View>
+        </ScrollView>
+      </CustomModal>
 
       {modalDetails && (
         <CustomModal modalVisible={modalVisible} toggle={hideModal}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalText}>Marker Info</Text>
+          <View style={modalStyles.modalContainer}>
+            <View style={modalStyles.modalContent}>
+              <Text style={modalStyles.modalText}>Marker Info</Text>
               <Text>Name: {modalDetails.name}</Text>
-              <Text>
-                Latitude:{" "}
-                {modalDetails.pickupLocation?.latitude ||
-                  modalDetails.location.latitude}
-              </Text>
-              <Text>
-                Longitude:{" "}
-                {modalDetails.pickupLocation?.longitude ||
-                  modalDetails.location.longitude}
-              </Text>
+              <Text>Latitude: {modalDetails.location.latitude}</Text>
+              <Text>Longitude: {modalDetails.location.longitude}</Text>
               {modalDetails.type !== "rider" ? (
                 <>
                   <Text>
