@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TextInput } from "react-native";
 import CustomMapView from "@/components/Map_Items/MapView";
 import CustomerMarkers from "@/components/Map_Items/CustomerMarkers";
 import CustomModal from "@/components/Modal/CustomModal";
@@ -15,7 +15,7 @@ import {
   useFocusEffect,
 } from "@react-navigation/native";
 import { setRideStatus } from "@actions/globalActions";
-import { updateRideStatus } from "@actions/rideActions";
+import { updateRideStatus, setRideDeclineReason } from "@actions/rideActions";
 import { runSimulation } from "@utils/rideProgressScreenUtils/runSimulation";
 import { rideScreenStyles } from "@styles/rideScreenStyles";
 
@@ -26,6 +26,8 @@ export default function RideProgressScreen() {
   const { rideIndex }: any = route.params;
 
   const [showModal, setShowModal] = useState(false);
+  const [declineReason, setDeclineReason] = useState("");
+
   const rides = useSelector((state: any) => state.ride);
   const { location: riderLocation, ...rider } = useSelector(
     (state: any) => state.rider
@@ -53,6 +55,7 @@ export default function RideProgressScreen() {
     clearTimeouts();
     dispatch(setRideStatus(false));
     dispatch(updateRideStatus(rideIndex, "declined"));
+    dispatch(setRideDeclineReason(rideIndex, declineReason));
     setShowModal(false);
     navigation.goBack();
   };
@@ -126,7 +129,12 @@ export default function RideProgressScreen() {
                 Destination: {currentRide.destination.latitude},{" "}
                 {currentRide.destination.longitude}
               </Text>
-              {/* Buttons */}
+              <TextInput
+                style={rideScreenStyles.textInput}
+                placeholder="Enter decline reason"
+                value={declineReason}
+                onChangeText={setDeclineReason}
+              />
               <View style={rideScreenStyles.buttonContainer}>
                 <CancelBtn onPress={handleDecline} text="Decline Ride" />
                 <CancelBtn onPress={() => setShowModal(false)} text="Close" />

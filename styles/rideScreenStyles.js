@@ -43,4 +43,14 @@ export const rideScreenStyles = StyleSheet.create({
     color: "white",
     fontSize: 16,
   },
+  textInput: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginVertical: 10,
+    backgroundColor: "white",
+    fontSize: 16,
+  },
 });
