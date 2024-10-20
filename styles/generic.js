@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 18,
-    color: "red", // Use red for errors
+    color: "red",
     fontWeight: "bold",
     textAlign: "center",
     marginVertical: 20,

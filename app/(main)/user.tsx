@@ -39,7 +39,7 @@ export default function UserBooking() {
 
   const dispatch = useDispatch();
 
-  const [updatedRides, setUpdatedRides] = useState(rides); // Store updated rides with addresses
+  const [updatedRides, setUpdatedRides] = useState(rides);
   useEffect(() => {
     const updateRideAddresses = async () => {
       const updated = await Promise.all(
