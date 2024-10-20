@@ -8,6 +8,8 @@ const useFilteredRides = (riderLocation, rides, maxSearchRadius) => {
     if (riderLocation && rides.length > 0) {
       const filtered = getNearbyRides(riderLocation, rides, maxSearchRadius);
       setFilteredRides(filtered);
+    } else {
+      setFilteredRides([]);
     }
   }, [riderLocation, rides, maxSearchRadius]);
 
