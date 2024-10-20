@@ -77,84 +77,100 @@ export default function Index() {
 
   return (
     <View style={styles.generic}>
-      <CustomMapView location={riderLocation}>
-        <RiderMarker
-          coordinate={riderLocation}
-          details={{ ...rider, location: { ...riderLocation } }}
-          onPress={showModal}
-        />
+      {error ? (
+        <View>
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
+      ) : (
+        <>
+          <CustomMapView location={riderLocation}>
+            <RiderMarker
+              coordinate={riderLocation}
+              details={{ ...rider, location: { ...riderLocation } }}
+              onPress={showModal}
+            />
 
-        {filteredRides && filteredRides.length > 0 ? (
-          <CustomerMarkers rides={filteredRides} onPress={showModal} />
-        ) : null}
-      </CustomMapView>
-      <FloatBtn onPress={toggleTutorialModal}>
-        <Ionicons name="information-circle-outline" size={32} color="black" />
-      </FloatBtn>
+            {filteredRides && filteredRides.length > 0 ? (
+              <CustomerMarkers rides={filteredRides} onPress={showModal} />
+            ) : null}
+          </CustomMapView>
 
-      {/* Tutorial Modal */}
-      <CustomModal
-        modalVisible={tutorialModalVisible}
-        toggle={toggleTutorialModal}
-      >
-        <ScrollView contentContainerStyle={modalStyles.modalContent}>
-          <View>
-            <TutorialContent />
-            <CancelBtn onPress={toggleTutorialModal} text="Close" />
-          </View>
-        </ScrollView>
-      </CustomModal>
+          <FloatBtn onPress={toggleTutorialModal}>
+            <Ionicons
+              name="information-circle-outline"
+              size={32}
+              color="black"
+            />
+          </FloatBtn>
 
-      {modalDetails && (
-        <CustomModal modalVisible={modalVisible} toggle={hideModal}>
-          <View style={modalStyles.modalContainer}>
-            <View style={modalStyles.modalContent}>
-              <Text style={modalStyles.modalText}>Marker Info</Text>
-              <Text>Name: {modalDetails.name}</Text>
-              <Text>Location: {currentLocationAddress}</Text>
-              {modalDetails.type !== "rider" ? (
-                <>
-                  <Text>Destination: {destinationAddress}</Text>
-                  <Text>Status: {modalDetails.status}</Text>
-                </>
-              ) : (
-                <>
-                  <Text>Max Search Radius: {searchRadius} km</Text>
-                  <Slider
-                    style={{ width: 200, height: 40 }}
-                    minimumValue={1}
-                    maximumValue={50}
-                    step={1}
-                    value={searchRadius <= 100 ? searchRadius : 0}
-                    onValueChange={setSearchRadius}
-                    disabled={!applyRadius}
-                  />
-                  <View style={styles.switchContainer}>
-                    <Text>No Search Radius</Text>
-                    <Switch
-                      value={!applyRadius}
-                      onValueChange={() => setApplyRadius((prev) => !prev)}
-                    />
-                  </View>
-                </>
-              )}
-
-              <View style={styles.btnContainer}>
-                {modalDetails.type !== "rider" ? (
-                  <>
-                    <AcceptBtn onPress={handleBookRide} text="Accept" />
-                    <CancelBtn onPress={hideModal} text="Close" />
-                  </>
-                ) : (
-                  <>
-                    <AcceptBtn onPress={handleApplySearchRadius} text="Apply" />
-                    <CancelBtn onPress={hideModal} text="Close" />
-                  </>
-                )}
+          {/* Tutorial Modal */}
+          <CustomModal
+            modalVisible={tutorialModalVisible}
+            toggle={toggleTutorialModal}
+          >
+            <ScrollView contentContainerStyle={modalStyles.modalContent}>
+              <View>
+                <TutorialContent />
+                <CancelBtn onPress={toggleTutorialModal} text="Close" />
               </View>
-            </View>
-          </View>
-        </CustomModal>
+            </ScrollView>
+          </CustomModal>
+
+          {modalDetails && (
+            <CustomModal modalVisible={modalVisible} toggle={hideModal}>
+              <View style={modalStyles.modalContainer}>
+                <View style={modalStyles.modalContent}>
+                  <Text style={modalStyles.modalText}>Marker Info</Text>
+                  <Text>Name: {modalDetails.name}</Text>
+                  <Text>Location: {currentLocationAddress}</Text>
+                  {modalDetails.type !== "rider" ? (
+                    <>
+                      <Text>Destination: {destinationAddress}</Text>
+                      <Text>Status: {modalDetails.status}</Text>
+                    </>
+                  ) : (
+                    <>
+                      <Text>Max Search Radius: {searchRadius} km</Text>
+                      <Slider
+                        style={{ width: 200, height: 40 }}
+                        minimumValue={1}
+                        maximumValue={50}
+                        step={1}
+                        value={searchRadius <= 100 ? searchRadius : 0}
+                        onValueChange={setSearchRadius}
+                        disabled={!applyRadius}
+                      />
+                      <View style={styles.switchContainer}>
+                        <Text>No Search Radius</Text>
+                        <Switch
+                          value={!applyRadius}
+                          onValueChange={() => setApplyRadius((prev) => !prev)}
+                        />
+                      </View>
+                    </>
+                  )}
+
+                  <View style={styles.btnContainer}>
+                    {modalDetails.type !== "rider" ? (
+                      <>
+                        <AcceptBtn onPress={handleBookRide} text="Accept" />
+                        <CancelBtn onPress={hideModal} text="Close" />
+                      </>
+                    ) : (
+                      <>
+                        <AcceptBtn
+                          onPress={handleApplySearchRadius}
+                          text="Apply"
+                        />
+                        <CancelBtn onPress={hideModal} text="Close" />
+                      </>
+                    )}
+                  </View>
+                </View>
+              </View>
+            </CustomModal>
+          )}
+        </>
       )}
     </View>
   );
