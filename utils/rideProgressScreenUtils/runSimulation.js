@@ -1,5 +1,9 @@
 import { updateRiderLocation } from "@actions/riderActions";
-import { updateRideStatus, updateRideLocation } from "@actions/rideActions";
+import {
+  updateRideStatus,
+  updateRideLocation,
+  updateRidePickupTime,
+} from "@actions/rideActions";
 import { Alert } from "react-native";
 
 export const runSimulation = (
@@ -19,6 +23,7 @@ export const runSimulation = (
         const timeout3 = setTimeout(() => {
           dispatch(updateRideStatus(rideIndex, "pickup"));
           dispatch(updateRiderLocation(location));
+          dispatch(updateRidePickupTime(rideIndex, new Date().toISOString()));
 
           const timeout4 = setTimeout(() => {
             dispatch(updateRideStatus(rideIndex, "dropped-off"));

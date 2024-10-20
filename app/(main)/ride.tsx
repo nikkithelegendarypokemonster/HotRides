@@ -14,6 +14,7 @@ import {
   useNavigation,
   useFocusEffect,
 } from "@react-navigation/native";
+import useReverseGeocode from "@/hooks/useReverseGeocode";
 import { setRideStatus } from "@actions/globalActions";
 import { updateRideStatus, setRideDeclineReason } from "@actions/rideActions";
 import { runSimulation } from "@utils/rideProgressScreenUtils/runSimulation";
@@ -32,18 +33,28 @@ export default function RideProgressScreen() {
   const { location: riderLocation, ...rider } = useSelector(
     (state: any) => state.rider
   );
+  const dateFormat = {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  };
 
   const currentRide = rides[rideIndex];
+
+  const { pickupAddress, destinationAddress } = useReverseGeocode(currentRide);
 
   const location = !!currentRide ? currentRide.location : null;
   const destination = !!currentRide ? currentRide.destination : null;
 
   const timeoutIds = useRef<number[]>([]);
 
-  const clearTimeouts = () => {
+  const clearTimeouts = useCallback(() => {
     timeoutIds.current.forEach((id) => clearTimeout(id));
     timeoutIds.current = [];
-  };
+  }, []);
 
   const finalSequence = () => {
     dispatch(setRideStatus(false));
@@ -123,13 +134,16 @@ export default function RideProgressScreen() {
               <Text>Customer Name: {currentRide.name}</Text>
               <Text>Rider Name: {currentRide.rider_name}</Text>
               <Text>Status: {currentRide.status}</Text>
+              <Text>Pickup Location: {pickupAddress}</Text>
+              <Text>Destination: {destinationAddress}</Text>
               <Text>
-                Pickup Location: {currentRide.pickupLocation.latitude},{" "}
-                {currentRide.pickupLocation.longitude}
-              </Text>
-              <Text>
-                Destination: {currentRide.destination.latitude},{" "}
-                {currentRide.destination.longitude}
+                Pickup Time:{" "}
+                {currentRide.pickupTime
+                  ? new Date(currentRide.pickupTime).toLocaleString(
+                      "en-US",
+                      dateFormat
+                    )
+                  : ""}
               </Text>
               <TextInput
                 style={rideScreenStyles.textInput}

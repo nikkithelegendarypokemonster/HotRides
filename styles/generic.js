@@ -23,4 +23,11 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 10,
   },
+  errorText: {
+    fontSize: 18,
+    color: "red", // Use red for errors
+    fontWeight: "bold",
+    textAlign: "center",
+    marginVertical: 20,
+  },
 });

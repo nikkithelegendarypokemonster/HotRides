@@ -46,6 +46,16 @@ const rideReducer = (state = [], action) => {
           : ride
       );
 
+    case "UPDATE_RIDE_PICKUP_TIME":
+      return state.map((ride, index) =>
+        index === action.payload.rideId
+          ? {
+              ...ride,
+              pickupTime: action.payload.pickupTime,
+            }
+          : ride
+      );
+
     default:
       return state;
   }

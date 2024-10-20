@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { View, Text, Switch, ScrollView } from "react-native";
 import Slider from "@react-native-community/slider";
 import TutorialContent from "@/components/Contents/TutorialContent";
-import BookBtn from "@/components/Buttons/BookBtn";
+import AcceptBtn from "@/components/Buttons/AcceptBtn";
 import CancelBtn from "@/components/Buttons/CancelBtn";
 import CustomMapView from "@/components/Map_Items/MapView";
 import RiderMarker from "@/components/Map_Items/RiderMarker";
@@ -10,17 +10,15 @@ import CustomerMarkers from "@/components/Map_Items/CustomerMarkers";
 import CustomModal from "@/components/Modal/CustomModal";
 import FloatBtn from "@/components/Buttons/FloatBtn";
 import { updateRideDriverInfo } from "@actions/rideActions";
-import {
-  setRiderDetails,
-  updateRiderLocation,
-  updateRiderSearchRadius,
-} from "@actions/riderActions";
+import { updateRiderSearchRadius } from "@actions/riderActions";
 import { setRideStatus } from "@actions/globalActions";
-import { getNearbyRides } from "@utils/riderMapScreenUtils/nearbyRides";
 import { styles } from "@styles/generic";
 import { modalStyles } from "@styles/modalStyles";
 import { useNavigation } from "@react-navigation/native";
-import * as Location from "expo-location";
+import useCurrentLocation from "@/hooks/useCurrentLocation";
+import useReverseGeocode from "@hooks/useReverseGeocode";
+import useUpdateRiderLocation from "@/hooks/useUpdateRiderLocation";
+import useFilteredRides from "@/hooks/useFilteredRides";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -34,52 +32,17 @@ export default function Index() {
   let rides = useSelector((state: any) => state.ride);
   const dispatch = useDispatch();
 
-  const [filteredRides, setFilteredRides] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [tutorialModalVisible, setTutorialModalVisible] = useState(false); // Tutorial modal state
+  const [tutorialModalVisible, setTutorialModalVisible] = useState(false);
   const [modalDetails, setModalDetails] = useState(null);
-  const [currentRiderLocation, setLocation] = useState(null);
   const [searchRadius, setSearchRadius] = useState(maxSearchRadius);
   const [applyRadius, setApplyRadius] = useState(maxSearchRadius !== -1);
 
-  useEffect(() => {
-    const getLocationAndUpdateRider = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-        return;
-      }
-
-      let currentLocation = await Location.getCurrentPositionAsync({});
-      setLocation({
-        latitude: currentLocation.coords.latitude,
-        longitude: currentLocation.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      });
-    };
-
-    getLocationAndUpdateRider();
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (currentRiderLocation) {
-      dispatch(setRiderDetails());
-      dispatch(
-        updateRiderLocation({
-          latitude: currentRiderLocation.latitude,
-          longitude: currentRiderLocation.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        })
-      );
-    }
-  }, [dispatch, currentRiderLocation]);
-
-  useEffect(() => {
-    const filtered = getNearbyRides(riderLocation, rides, maxSearchRadius);
-    setFilteredRides(filtered);
-  }, [riderLocation, maxSearchRadius, rides]);
+  const { location: currentRiderLocation, error } = useCurrentLocation();
+  const { destinationAddress, currentLocationAddress } =
+    useReverseGeocode(modalDetails);
+  const filteredRides = useFilteredRides(riderLocation, rides, maxSearchRadius);
+  useUpdateRiderLocation(currentRiderLocation);
 
   const handleBookRide = () => {
     hideModal();
@@ -108,7 +71,6 @@ export default function Index() {
     setModalDetails(null);
   };
 
-  // Function to toggle the tutorial modal
   const toggleTutorialModal = () => {
     setTutorialModalVisible(!tutorialModalVisible);
   };
@@ -149,14 +111,10 @@ export default function Index() {
             <View style={modalStyles.modalContent}>
               <Text style={modalStyles.modalText}>Marker Info</Text>
               <Text>Name: {modalDetails.name}</Text>
-              <Text>Latitude: {modalDetails.location.latitude}</Text>
-              <Text>Longitude: {modalDetails.location.longitude}</Text>
+              <Text>Location: {currentLocationAddress}</Text>
               {modalDetails.type !== "rider" ? (
                 <>
-                  <Text>
-                    Destination: {modalDetails.destination.latitude},{" "}
-                    {modalDetails.destination.longitude}
-                  </Text>
+                  <Text>Destination: {destinationAddress}</Text>
                   <Text>Status: {modalDetails.status}</Text>
                 </>
               ) : (
@@ -184,12 +142,12 @@ export default function Index() {
               <View style={styles.btnContainer}>
                 {modalDetails.type !== "rider" ? (
                   <>
-                    <BookBtn onPress={handleBookRide} text="Accept" />
+                    <AcceptBtn onPress={handleBookRide} text="Accept" />
                     <CancelBtn onPress={hideModal} text="Close" />
                   </>
                 ) : (
                   <>
-                    <BookBtn onPress={handleApplySearchRadius} text="Apply" />
+                    <AcceptBtn onPress={handleApplySearchRadius} text="Apply" />
                     <CancelBtn onPress={hideModal} text="Close" />
                   </>
                 )}

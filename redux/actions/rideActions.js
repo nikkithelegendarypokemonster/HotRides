@@ -6,6 +6,7 @@ import {
   UPDATE_RIDE_LOCATION,
   UPDATE_RIDE_DRIVER_INFO,
   SET_RIDE_DECLINE_REASON,
+  UPDATE_RIDE_PICKUP_TIME,
 } from "../constants/rideConstants";
 
 export const setRideDetails = (details) => ({
@@ -41,4 +42,9 @@ export const updateRideLocation = (rideId, location) => ({
 export const updateRideDriverInfo = (rideId, driverId, driverName) => ({
   type: UPDATE_RIDE_DRIVER_INFO,
   payload: { rideId, driverId, driverName },
+});
+
+export const updateRidePickupTime = (rideId, pickupTime) => ({
+  type: UPDATE_RIDE_PICKUP_TIME,
+  payload: { rideId, pickupTime },
 });

@@ -2,7 +2,7 @@ import { Tabs } from "expo-router";
 import { useSelector } from "react-redux";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-export default function AuthLayout() {
+export default function MainLayout() {
   const rideStatus = useSelector((state: any) => state.global);
 
   return (

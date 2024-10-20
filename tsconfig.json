@@ -9,7 +9,8 @@
       "@states/*": ["./redux/states/*"],
       "@actions/*": ["./redux/actions/*"],
       "@testData/*": ["./testData/*"],
-      "@utils/*": ["./utils/*"]
+      "@utils/*": ["./utils/*"],
+      "@hooks/*": ["./hooks/*"]
     }
   },
   "include": [
