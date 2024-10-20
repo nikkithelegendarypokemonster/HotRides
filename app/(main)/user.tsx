@@ -62,7 +62,9 @@ export default function UserBooking() {
     };
 
     if (rides.length > 0) {
-      updateRideAddresses(); // Call the function to process addresses
+      updateRideAddresses();
+    } else {
+      setUpdatedRides([]);
     }
   }, [rides]);
 
