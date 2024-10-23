@@ -1,6 +1,6 @@
-# 🛺 Wingz - Simplified Ride-Hailing App
+# 🛺 HotRides - Simplified Ride-Hailing App
 
-**Wingz** is a sleek and simplified ride-hailing app, allowing drivers and customers to interact seamlessly. 🚗💨 The app enables users to view markers for both riders and customers on a map, accept ride requests, simulate trips, and book random rides for testing purposes. It's built with Expo and is ready for development and testing on **Expo Go**.
+**HotRides** is a sleek and simplified ride-hailing app, allowing drivers and customers to interact seamlessly. 🚗💨 The app enables users to view markers for both riders and customers on a map, accept ride requests, simulate trips, and book random rides for testing purposes. It's built with Expo and is ready for development and testing on **Expo Go**.
 
 ## 🌟 Key Features
 
